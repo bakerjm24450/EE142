@@ -40,7 +40,7 @@ void Ball::draw(sf::RenderTarget& target)
 {
 	// translate to ball's current position
 	sf::Transform transform;
-	transform.translate((float)x.getX(), (float)x.getY());
+	transform.translate({(float)x.getX(), (float)x.getY()});
 
 	// draw it there
 	target.draw(shape, transform);

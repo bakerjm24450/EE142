@@ -9,7 +9,7 @@ const int windowHeight = 480;
 int main()
 {
 	// create a new window to display the game
-	sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Bouncy bouncy!");
+	sf::RenderWindow window(sf::VideoMode({windowWidth, windowHeight}), "Bouncy bouncy!");
 
 	// get a clock we can use to measure elapsed time
 	sf::Clock clock;
@@ -21,10 +21,9 @@ int main()
 	while (window.isOpen())
 	{
 		// handle any pending events
-		sf::Event event;
-		while (window.pollEvent(event))
+		while (const std::optional event = window.pollEvent())
 		{
-			if (event.type == sf::Event::Closed)
+			if (event->is<sf::Event::Closed>())
 				window.close();
 		}
 
