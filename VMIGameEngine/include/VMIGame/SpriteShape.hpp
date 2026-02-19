@@ -16,26 +16,34 @@ namespace vmi
     class SpriteShape : public Shape
     {
     public:
-        SpriteShape() : Shape(), texture(nullptr) {}
+        SpriteShape() : Shape(), texture(nullptr), sprite(nullptr) {}
         SpriteShape(std::string filename);
         SpriteShape(const SpriteShape &other);
         SpriteShape &operator=(const SpriteShape &rtSide);
-        ~SpriteShape() {}
+        ~SpriteShape() {
+            if (sprite != nullptr)
+            {
+                delete sprite;
+            }
+        }
 
         // set the texture rectangle (which part of texture to show)
         void setTextureRectangle(Vector2d ul, Vector2d lr)
         {
-            sf::IntRect rect((int)ul.getX(), (int)ul.getY(),
-                             (int)(lr.getX() - ul.getX()), (int)(lr.getY() - ul.getY()));
+            sf::IntRect rect({(int)ul.getX(), (int)ul.getY()},
+                             {(int)(lr.getX() - ul.getX()), (int)(lr.getY() - ul.getY())});
 
-            sprite.setTextureRect(rect);
+            sprite->setTextureRect(rect);
         }
 
         // draw the sprite
         void draw(sf::RenderTarget &target, sf::RenderStates states) const
         {
 #ifndef ZYBOOKS
-            target.draw(sprite, states);
+            if (sprite != nullptr)
+            {
+                target.draw(*sprite, states);
+            }
 #endif
         }
 
@@ -43,15 +51,23 @@ namespace vmi
         const BoundingBox getBounds() const
         {
             // get SFML's representation of the bounds
-            sf::FloatRect box = sprite.getLocalBounds();
+            if (sprite == nullptr)
+            {
+                return BoundingBox();
+            }
+            else
+            {
+                sf::FloatRect box = sprite->getLocalBounds();
 
-            // turn it into our bounding box
-            return BoundingBox(Vector2d(box.left, box.top),
-                               Vector2d(box.left + box.width, box.top + box.height));
+                // turn it into our bounding box
+                return BoundingBox(Vector2d(box.position.x, box.position.y),
+                                   Vector2d(box.position.x + box.size.x,
+                                            box.position.y + box.size.y));
+            }
         }
 
     private:
-        sf::Sprite sprite;    // SFML sprite
+        sf::Sprite *sprite;   // SFML sprite
         sf::Texture *texture; // texture to use for sprite
 
         // map of all textures, indexed by filename
@@ -60,7 +76,7 @@ namespace vmi
 
     // Constructor
     // Input: filename = name of texture file
-    inline SpriteShape::SpriteShape(std::string filename) : Shape()
+    inline SpriteShape::SpriteShape(std::string filename) : Shape(), sprite(nullptr)
     {
         // look to see if texture has already been loaded
         auto it = textures.find(filename);
@@ -89,19 +105,20 @@ namespace vmi
         // now initialize the SFML Sprite
         if (texture != nullptr)
         {
-            sprite.setTexture(*texture);
+            // create a new sprite
+            sprite = new sf::Sprite(*texture);
         }
     }
 
     // Copy constructor
-    inline SpriteShape::SpriteShape(const SpriteShape &other)
+    inline SpriteShape::SpriteShape(const SpriteShape &other) : sprite(nullptr)
     {
         texture = other.texture;
 
         // set the texture for my sprite
         if (texture != nullptr)
         {
-            sprite.setTexture(*texture);
+            sprite = new sf::Sprite(*texture);
         }
     }
 
@@ -117,7 +134,7 @@ namespace vmi
             // set the texture for my sprite
             if (texture != nullptr)
             {
-                sprite.setTexture(*texture);
+                sprite->setTexture(*texture);
             }
         }
 

@@ -47,12 +47,12 @@ public:
 
 	// Specify the fill color
 	void setFill(Color color) {
-		polygon.setFillColor(sf::Color(static_cast<sf::Uint32>(color)));
+		polygon.setFillColor(sf::Color(static_cast<std::uint32_t>(color)));
 	}
 
 	// Specify the outline color
 	void setOutline(Color color) {
-		polygon.setOutlineColor(sf::Color(static_cast<sf::Uint32>(color)));
+		polygon.setOutlineColor(sf::Color(static_cast<std::uint32_t>(color)));
 	}
 
 private:

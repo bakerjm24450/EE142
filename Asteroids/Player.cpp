@@ -284,11 +284,11 @@ void Player::draw(sf::RenderTarget &target, sf::RenderStates states) const
 	sf::Transform transform;
 
 	// show extra lives as smaller ships
-	transform.scale(0.5f, 0.5f).translate(75.0f, 130.0f);
+	transform.scale({0.5f, 0.5f}).translate({75.0f, 130.0f});
 	for (int i = 0; i < numLives - 1; ++i)
 	{
 		// move over a little to draw next ship
-		transform.translate(50.0f, 0.0f);
+		transform.translate({50.0f, 0.0f});
 		rs.transform = transform;
 
 		ship[0].draw(target, rs);
@@ -338,7 +338,7 @@ void Player::stopFlashing()
 // Returns unit vector pointing in direction ship is facing.
 Vector2d Player::getForwardVector() const
 {
-	double angleRad = angle * 3.1415926 / 180.0; // convert rotation angle to radians
+	double angleRad = angle * 3.1415926 / 180.0; // convert rotation angle to degrees
 
 	return Vector2d(sin(angleRad), -cos(angleRad));
 }

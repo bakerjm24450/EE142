@@ -9,9 +9,9 @@
 namespace vmi {
 
 enum class MouseButton {
-	Left = (int) sf::Mouse::Left,
-	Right = sf::Mouse::Right,
-	Middle = sf::Mouse::Middle
+	Left = (int) sf::Mouse::Button::Left,
+	Right = (int) sf::Mouse::Button::Right,
+	Middle = (int) sf::Mouse::Button::Middle
 };
 
 } // namespace vmi

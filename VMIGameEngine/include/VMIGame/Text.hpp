@@ -12,24 +12,29 @@
 
 namespace vmi {
 
+#ifndef ZYBOOKS
+    static inline sf::Font* defaultFont = new sf::Font("./VMIGameEngine/resource/sansation.ttf");
+#else
+    static inline sf::Font* defaultFont;
+#endif
+
 class Text
 {
 public:
-    Text() {
-        loadDefaultFont();
-        shape.setFont(*font);
+    Text() : shape(*defaultFont, ""), text(""), 
+        position(Vector2d()), characterSize(30), fillColor(Color::White), 
+        outlineColor(Color::Transparent) {
     }
-    Text(std::string _text, Vector2d _position) : text(_text), position(_position) {
-        loadDefaultFont();
-        shape.setFont(*font);
-        shape.setString(text);
+
+    Text(std::string _text, Vector2d _position) : shape(*defaultFont, _text), text(_text), position(_position) {
+
     }
     ~Text() {}
 
     // draw the text
     void draw(sf::RenderTarget& target, sf::RenderStates states) const {
         sf::Transform transform;
-        transform.translate((float)position.getX(), (float) position.getY());
+        transform.translate(sf::Vector2f((float)position.getX(), (float) position.getY()));
         states.transform = transform;
         target.draw(shape, states);
     }
@@ -46,11 +51,11 @@ public:
     void setPosition(const Vector2d newPosition) { position = newPosition; }
     void setFill(const Color newColor) {
         fillColor = newColor;
-        shape.setFillColor(sf::Color(static_cast<sf::Uint32>(fillColor)));
+        shape.setFillColor(sf::Color(static_cast<std::uint32_t>(fillColor)));
     }
     void setOutline(const Color newColor) {
         outlineColor = newColor;
-        shape.setOutlineColor(sf::Color(static_cast<sf::Uint32>(outlineColor)));
+        shape.setOutlineColor(sf::Color(static_cast<std::uint32_t>(outlineColor)));
     }
 
 private:
@@ -62,23 +67,9 @@ private:
 
     sf::Text shape;                 // SFML shape
 
-    void loadDefaultFont() {
-#ifndef ZYBOOKS        
-        if (font == nullptr) {
-            font = new sf::Font();
 
-            char* path;
-            bool success = false;
-
-            // didn't find one, so hope it's in the right dir
-            font->loadFromFile("./VMIGameEngine/resource/sansation.ttf");
-        }
-#endif        
-    }
-
-    static inline sf::Font *font = nullptr;
 };
 
 } // namespace vmi
 
-#endif
+#endif // TEXT_H

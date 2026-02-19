@@ -32,9 +32,8 @@ Particle::Particle(Vector2d point, Vector2d _v, Color color)
 	v += Vector2d(rand() % 200 - 100, rand() % 200 - 100);
 
 	// die after 1 second
-	Timer::createTimer(1.0, [&]() {
-		die();
-	});
+	Timer::createTimer(1.0, [&]()
+					   { die(); });
 }
 
 Particle::Particle(Vector2d start, Vector2d end, Vector2d _v, Color color)
@@ -53,7 +52,8 @@ Particle::Particle(Vector2d start, Vector2d end, Vector2d _v, Color color)
 	w = rand() % 180 - 90; // between -90 and +90 angles / sec
 
 	// die after 1 second
-	Timer::createTimer(1.0, [&]() { die(); });
+	Timer::createTimer(1.0, [&]()
+					   { die(); });
 }
 
 Particle::~Particle()
@@ -78,9 +78,11 @@ void Particle::explode(const MovingThing *thing, bool lines)
 
 	// build an SFML transform
 	sf::Transform transform;
-	transform.scale((float)scale, (float)scale, (float)center.getX(), (float)center.getY());
-	transform.rotate((float)angle, (float)center.getX(), (float)center.getY());
-	transform.translate((float)x.getX(), (float)x.getY());
+	transform.scale(sf::Vector2f((float)scale, (float)scale),
+					sf::Vector2f((float)center.getX(), (float)center.getY()));
+	transform.rotate(sf::degrees((float)angle),
+					 sf::Vector2f((float)center.getX(), (float)center.getY()));
+	transform.translate(sf::Vector2f((float)x.getX(), (float)x.getY()));
 
 	// get array of vertices that make up the shape
 	const VertexShape *vs = dynamic_cast<const VertexShape *>(thing->getShape());
@@ -93,7 +95,8 @@ void Particle::explode(const MovingThing *thing, bool lines)
 		Color color = (*it).second;
 
 		// transform the point
-		sf::Vector2f transformedPoint = transform.transformPoint((float)point.getX(), (float)point.getY());
+		sf::Vector2f transformedPoint = transform.transformPoint(
+			sf::Vector2f((float)point.getX(), (float)point.getY()));
 
 		// make it a particle
 		new Particle(Vector2d(transformedPoint.x, transformedPoint.y), v, color);
