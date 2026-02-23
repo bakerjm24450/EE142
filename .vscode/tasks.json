@@ -26,6 +26,7 @@
                 "args": [
                     "-g",
                     "-std=c++17",
+                    "-Wall",
                     "-IVMIGameEngine/include",
                     "-IVMIGameEngine/include/VMIGame",
                     "${relativeFileDirname}/*.cpp",

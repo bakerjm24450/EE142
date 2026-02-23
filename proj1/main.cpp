@@ -45,9 +45,6 @@ void UnitTest::displayResults()
 
 int main(void)
 {
-    int tests = 0;
-    int passed = 0;
-
     // Each test is enclosed in braces so that we can declare local variables
     {
         Vector2d v;
