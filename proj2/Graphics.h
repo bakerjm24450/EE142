@@ -1,11 +1,11 @@
 #pragma once
 
 /*
-* This header file simply serves as a wrapper around the SFML library. It is included so that we can
-* perform unit testing on the code with gcc for the zyBooks environment.
-*
-* DO NOT MODIFY THIS FILE!
-*/
+ * This header file simply serves as a wrapper around the SFML library. It is included so that we can
+ * perform unit testing on the code with gcc for the zyBooks environment.
+ *
+ * DO NOT MODIFY THIS FILE!
+ */
 
 #ifndef ZYBOOKS
 
@@ -31,7 +31,8 @@ namespace sf
 	{
 	public:
 		Clock() {}
-		Time restart() {
+		Time restart()
+		{
 			return Time();
 		}
 	};
@@ -39,8 +40,9 @@ namespace sf
 	class Vector2f
 	{
 	public:
-		Vector2f() { }
-		Vector2f(float _x, float _y) : x(_x), y(_y) { }
+		Vector2f() {}
+		Vector2f(float _x, float _y) : x(_x), y(_y) {}
+
 	private:
 		float x;
 		float y;
@@ -49,14 +51,15 @@ namespace sf
 	class Transform
 	{
 	public:
-		Transform() { }
-		void translate(float x, float y) { }
+		Transform() {}
+		void translate(float x, float y) {}
+		void translate(sf::Vector2f v) {}
 	};
 
 	class Color
 	{
 	public:
-		Color() { }
+		Color() {}
 
 		static const Color Black;
 		static const Color White;
@@ -73,8 +76,9 @@ namespace sf
 	{
 	public:
 		Shape() {}
-		void setPosition(float x, float y) { }
-		void setFillColor(const sf::Color& color) { }
+		void setPosition(float x, float y) {}
+		void setPosition(sf::Vector2f v) {}
+		void setFillColor(const sf::Color &color) {}
 	};
 
 	class RectangleShape : public Shape
@@ -87,43 +91,48 @@ namespace sf
 	class VideoMode
 	{
 	public:
-		VideoMode(int w, int h) { }
+		VideoMode(sf::Vector2f v) {}
 	};
 
 	class Event
 	{
 	public:
-		Event() { }
-		enum EventType {
-			Closed
+		struct Closed
+		{
 		};
-		EventType type;
+
+		template <typename TEventSubtype>
+		bool is() const { return false; }
 	};
 
 	class RenderTarget
 	{
 	public:
-		RenderTarget() { }
-		void draw(sf::Shape shape, sf::Transform transform) { }
-		void draw(sf::Shape shape) { }
-		void clear() { }
+		RenderTarget() {}
+		void draw(sf::Shape shape, sf::Transform transform) {}
+		void draw(sf::Shape shape) {}
+		void clear() {}
 	};
 
 	class RenderWindow : public RenderTarget
 	{
 	public:
-		RenderWindow(sf::VideoMode mode, const String& title) { }
+		RenderWindow(sf::VideoMode mode, const String &title) {}
 		bool isOpen() { return true; }
-		void close() { }
-		void display() { }
+		void close() {}
+		void display() {}
 		bool pollEvent(sf::Event event) { return false; }
 	};
 
 	class Keyboard
 	{
 	public:
-		enum Key {
-			S, W, Up, Down
+		enum Key
+		{
+			S,
+			W,
+			Up,
+			Down
 		};
 		static bool isKeyPressed(Key key) { return false; }
 	};
