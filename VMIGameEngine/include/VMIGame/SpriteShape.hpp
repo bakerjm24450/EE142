@@ -16,7 +16,7 @@ namespace vmi
     class SpriteShape : public Shape
     {
     public:
-        SpriteShape() : Shape(), texture(nullptr), sprite(nullptr) {}
+        SpriteShape() : Shape(), sprite(nullptr), texture(nullptr) {}
         SpriteShape(std::string filename);
         SpriteShape(const SpriteShape &other);
         SpriteShape &operator=(const SpriteShape &rtSide);
